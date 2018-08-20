@@ -10,6 +10,7 @@ import os
 import datetime
 import torch
 import time
+from visdom import Visdom
 from .torch_utils import *
 try:
     # python >= 3.5
@@ -19,6 +20,11 @@ except:
     from pathlib2 import Path
 
 def run_steps(agent):
+    viz = Visdom()
+    win = None
+    win_dic = {}
+    win_dic['curve'] = None
+    recorder = []
     random_seed()
     config = agent.config
     agent_name = agent.__class__.__name__
@@ -29,6 +35,19 @@ def run_steps(agent):
         if config.log_interval and not agent.total_steps % config.log_interval and len(agent.episode_rewards):
             rewards = agent.episode_rewards
             agent.episode_rewards = []
+
+            try:
+                # try expend
+                recorder += [np.sum(rewards)]
+            except Exception as e:
+                # else, initialize
+                recorder = [np.sum(rewards)]
+            win_dic['curve'] = viz.line(
+                            torch.from_numpy(np.asarray(recorder)),
+                            win=win_dic['curve'],
+                            opts=dict(title= 'OC-curve')
+                        )
+
             config.logger.info('total steps %d, returns %.2f/%.2f/%.2f/%.2f (mean/median/min/max), %.2f steps/s' % (
                 agent.total_steps, np.mean(rewards), np.median(rewards), np.min(rewards), np.max(rewards),
                 config.log_interval / (time.time() - t0)))

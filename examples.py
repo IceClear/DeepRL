@@ -341,6 +341,7 @@ def option_ciritc_pixel_atari(name):
     config.logger = get_logger(file_name=option_ciritc_pixel_atari.__name__)
     run_steps(OptionCriticAgent(config))
 
+
 # PPO
 def ppo_cart_pole():
     config = Config()
@@ -562,7 +563,7 @@ if __name__ == '__main__':
     # categorical_dqn_pixel_atari(game)
     # a2c_pixel_atari(game)
     # n_step_dqn_pixel_atari(game)
-    # option_ciritc_pixel_atari(game)
+    option_ciritc_pixel_atari(game)
     # ppo_pixel_atari(game)
     # dqn_ram_atari(game)
     # ddpg_pixel()
@@ -570,4 +571,3 @@ if __name__ == '__main__':
     # action_conditional_video_prediction()
 
     # plot()
-

@@ -8,7 +8,7 @@ import argparse
 import torch
 
 class Config:
-    DEVICE = torch.device('cpu')
+    DEVICE = torch.device('cuda')
     def __init__(self):
         self.parser = argparse.ArgumentParser()
         self.task_fn = None
@@ -51,7 +51,7 @@ class Config:
         self.random_action_prob = None
         self.__eval_env = None
         self.log_interval = int(1e3)
-        self.save_interval = 0
+        self.save_interval = 1000
         self.eval_interval = 0
         self.eval_episodes = 10
         self.async_actor = True
